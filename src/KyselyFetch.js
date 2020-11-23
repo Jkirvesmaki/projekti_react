@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, } from 'react';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -9,10 +9,10 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 
 function KyselyFetch() {
-  const [value, setValue] = React.useState('Kyllä');
+  const [value, setValue] = useState('');
   const [questions, setQuestions] = useState([]);
   const [teksti, setTeksti] = useState('Haetaan');
-
+  const [error, setError] = React.useState(false);
   const [kylla, setKylla] = useState('Haetaan');
   const [ei, setEi] = useState('Haetaan');
 
@@ -35,53 +35,44 @@ function KyselyFetch() {
 
 useEffect( () => { fetchUrl(); }, [])
 
-  const handleChange = (event) => {
+  const handleRadioChange = (event) => {
     setValue(event.target.value);
+
+};
+  const handleSubmit = (event) => {
+    event.preventDefault();
   };
 
   return (  <Grid container spacing={2}
-    container
     direction="column"
     justify="center"
-    alignItems="left"
-  >
- 
-        {
-        questions.map(question => {
-          
+    alignItems="flex-start">
+      
+      {
+      questions.map(question => { 
   return(
-            
+    <form onSubmit={handleSubmit}>
         <FormControl component="fieldset">
         <FormLabel component="legend">{question.title}</FormLabel>
-        <RadioGroup aria-label={question.title} name={question.title} value={question.title} onChange={handleChange}>
-        
-            <FormControlLabel
-              value={question.body}
+        <RadioGroup aria-label={question.title} name={question.title} value={value} onChange={handleRadioChange}>
+        <FormControlLabel
+              value="paska"
               control={<Radio />}
-              label={question.body[0]}
-             
+              label={question.body[0]}           
             />
         <FormControlLabel
-              value={question.body}
+              value="perse"
               control={<Radio />}
-              label={question.body[1]}
-             
+              label={question.body[1]}          
             />
-
-
-         
         </RadioGroup>
       </FormControl> 
-     
-          );
-           
+      </form>
+          );  
         })
       }
-
-
-  <Button>submit</Button>
-    
-      </Grid>
+       <Button type="submit" variant="outlined" color="primary"> submit</Button>
+ </Grid>
   );
 
     }

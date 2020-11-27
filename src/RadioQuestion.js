@@ -4,11 +4,11 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
-import KyselyFetchApp from './KyselyFetchApp';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 
-function KyselyFetch() {
+
+export default function RadioQuestion(props) {
   const [value, setValue] = useState('');
   const [questions, setQuestions] = useState([]);
   const [teksti, setTeksti] = useState('Haetaan');
@@ -17,41 +17,25 @@ function KyselyFetch() {
   const [ei, setEi] = useState('Haetaan');
   const [vast, setVast] = useState([]);
 
-  const fetchUrl = async () => {
+    const handleRadioChange = (event) => {
+        setValue({...value, vast: event.target.value });
+        console.log(value);
+        
+      };
 
-  try {
-    let proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-    let targetUrl = 'https://ohjelmistoprojekti1backend.herokuapp.com/questions/';
-    const response = await fetch(proxyUrl + targetUrl);
-    const json = await response.json();
-    setQuestions(json);
-    
-   
-    setKylla(json.options[0].value)
-    console.log(ei);
-} catch (error) {
-    setTeksti('Haku ei onnistunut');
-}}
+      const handleSubmit = (event) => {
+        event.preventDefault();
+        console.log(value);
+      };
 
-useEffect( () => { fetchUrl(); }, [])
 
-const handleRadioChange = (event) => {
-  setValue({...value, vast: event.target.value });
- 
-};
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log(value);
-  };
-
-  return (  <Grid container spacing={2}
+return( <Grid container spacing={2}
     direction="column"
     justify="center"
     alignItems="flex-start">
     
       {
-      questions.map(question => { 
+      props.questions.map(question => { 
   return(
     
     <form key={ question.options.questionId } onSubmit={handleSubmit}>
@@ -90,7 +74,5 @@ const handleRadioChange = (event) => {
     
        
  </Grid>
-  );
 
-    }
-export default KyselyFetch;
+)}
